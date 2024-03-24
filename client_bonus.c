@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:24:56 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:20:51 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:08:45 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf/ft_printf.h"
+//#include "../ft_printf/ft_printf.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
@@ -30,6 +30,11 @@ int	ft_atoi(const char *str)
 	return (g[0] * (((2 * (g[1] == '-')) - 1) * -1));
 }
 
+void	ack_handler(int sig)
+{
+	write(1, "Message received by server\n", 27);
+}
+
 void	send_bit(int pid, int bit)
 {
 	if (bit == 1)
@@ -39,52 +44,38 @@ void	send_bit(int pid, int bit)
 	usleep(100);
 }
 
-void	send_char(int pid, char c)
+void	send_data(int pid, int data, int size)
 {
-	int	j;
-	int	bit;
-
-	j = 7;
-	while (j >= 0)
-	{
-		bit = (c >> j) & 1;
-		send_bit(pid, bit);
-		j--;
-	}
-}
-
-void	send_string(int pid, char *str)
-{
-	int	len;
 	int	i;
 	int	bit;
 
-	len = strlen(str);
-	i = 31;
+	i = size - 1;
 	while (i >= 0)
 	{
-		bit = (len >> i) & 1;
+		bit = (data >> i) & 1;
 		send_bit(pid, bit);
 		i--;
-	}
-	i = 0;
-	while (str[i])
-	{
-		send_char(pid, str[i]);
-		i++;
 	}
 }
 
 int	main(int argc, char **argv)
 {
 	pid_t	pid;
+	int		i;
 
 	if (argc != 3)
 	{
 		write(1, "error\n", 6);
 		return (1);
 	}
+	signal(SIGUSR1, ack_handler);
 	pid = ft_atoi(argv[1]);
-	send_string(pid, argv[2]);
+	send_data(pid, strlen(argv[2]), 32);
+	i = 0;
+	while (argv[2][i])
+	{
+		send_data(pid, argv[2][i], 8);
+		i++;
+	}
 	return (0);
 }

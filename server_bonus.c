@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:25:25 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:24:57 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:17:26 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf/ft_printf.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+
+void	send_ack(int pid)
+{
+	kill(pid, SIGUSR1);
+}
 
 void	handle_len_bit(int sig, int *len, int *len_received)
 {
@@ -39,7 +43,7 @@ void	handle_char_bit(int sig, int *received, int *bits_received, int *len)
 	}
 }
 
-void	signal_handler(int sig)
+void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	static int	received = 0;
 	static int	bits_received = 0;
@@ -54,17 +58,22 @@ void	signal_handler(int sig)
 	{
 		write(1, "\n", 1);
 		len_received = 0;
+		send_ack(info->si_pid);
 	}
 }
 
 int	main(void)
 {
-	pid_t	p;
+	struct sigaction	sa;
+	pid_t				p;
 
 	p = getpid();
 	printf("Server PID: %d\n", p);
-	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
+	sa.sa_sigaction = signal_handler;
+	sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 		pause();
 	return (0);
