@@ -6,11 +6,11 @@
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:25:25 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:24:57 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:35:55 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf/ft_printf.h"
+#include "ft_printf/ft_printf.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,7 +62,7 @@ int	main(void)
 	pid_t	p;
 
 	p = getpid();
-	printf("Server PID: %d\n", p);
+	ft_printf("Server PID: %d\n", p);
 	signal(SIGUSR1, signal_handler);
 	signal(SIGUSR2, signal_handler);
 	while (1)

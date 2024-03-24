@@ -6,11 +6,11 @@
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:24:56 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:20:51 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:35:34 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_printf/ft_printf.h"
+#include "ft_printf/ft_printf.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>

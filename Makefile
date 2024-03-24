@@ -6,7 +6,7 @@
 #    By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 12:34:28 by aalhalab          #+#    #+#              #
-#    Updated: 2024/03/24 22:44:13 by aalhalab         ###   ########.fr        #
+#    Updated: 2024/03/24 23:34:21 by aalhalab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,22 +28,39 @@ OBJ_C_BONUS = $(SRC_C_BONUS:.c=.o)
 SRC_S_BONUS = server_bonus.c
 OBJ_S_BONUS = $(SRC_S_BONUS:.c=.o)
 
+LIBFT = ft_printf/libftprintf.a
+LIBFT_DIR = ft_printf/
+
 all : $(NAME_C) $(NAME_S)
-$(NAME_C): $(OBJ_C) $(OBJ_L)
-    $(CC) $(CFLAGS) $^ -o $@
-$(NAME_S): $(OBJ_S) $(OBJ_L)
-    $(CC) $(CFLAGS) $^ -o $@
+
+$(NAME_C): $(OBJ_C) $(LIBFT)
+	$(CC) $(CFLAGS) $^ -o $@
+
+$(NAME_S): $(OBJ_S) $(LIBFT)
+	$(CC) $(CFLAGS) $^ -o $@
 
 bonus : $(NAME_C_BONUS) $(NAME_S_BONUS)
-$(NAME_C_BONUS): $(OBJ_C_BONUS) $(OBJ_L)
-    $(CC) $(CFLAGS) $^ -o $@
-$(NAME_S_BONUS): $(OBJ_S_BONUS) $(OBJ_L)
-    $(CC) $(CFLAGS) $^ -o $@
-	
+
+$(NAME_C_BONUS): $(OBJ_C_BONUS) $(LIBFT)
+	$(CC) $(CFLAGS) $^ -o $@
+
+$(NAME_S_BONUS): $(OBJ_S_BONUS) $(LIBFT)
+	$(CC) $(CFLAGS) $^ -o $@
+
+$(LIBFT):
+	make -C $(LIBFT_DIR)
+
 %.o: %.c
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
-    rm -rf *.o ft_printf/*.o
+	rm -rf *.o
+	make clean -C $(LIBFT_DIR)
+
 fclean: clean
-    rm -rf $(NAME_C) $(NAME_S) $(NAME_C_BONUS) $(NAME_S_BONUS)
+	rm -rf $(NAME_C) $(NAME_S) $(NAME_C_BONUS) $(NAME_S_BONUS)
+	make fclean -C $(LIBFT_DIR)
+
 re: fclean all
+
+.PHONY: all clean fclean re bonus

@@ -6,10 +6,11 @@
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:25:25 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:17:26 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:58:59 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf/ft_printf.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,6 +51,7 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 	static int	len = 0;
 	static int	len_received = 0;
 
+	(void)context;
 	if (len_received < 32)
 		handle_len_bit(sig, &len, &len_received);
 	else
@@ -68,7 +70,7 @@ int	main(void)
 	pid_t				p;
 
 	p = getpid();
-	printf("Server PID: %d\n", p);
+	ft_printf("Server PID: %d\n", p);
 	sa.sa_sigaction = signal_handler;
 	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);

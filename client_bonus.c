@@ -6,11 +6,11 @@
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:24:56 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:08:45 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:40:32 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../ft_printf/ft_printf.h"
+#include "ft_printf/ft_printf.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
@@ -32,7 +32,18 @@ int	ft_atoi(const char *str)
 
 void	ack_handler(int sig)
 {
-	write(1, "Message received by server\n", 27);
+	if (sig == SIGUSR1)
+	{
+		write(1, "Received SIGUSR1\n", 17);
+	}
+	else if (sig == SIGUSR2)
+	{
+		write(1, "Received SIGUSR2\n", 17);
+	}
+	else
+	{
+		write(1, "Unknown signal received\n", 24);
+	}
 }
 
 void	send_bit(int pid, int bit)
