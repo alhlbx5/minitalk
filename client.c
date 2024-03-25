@@ -6,7 +6,7 @@
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:24:56 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:35:34 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/25 02:09:57 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ void	send_char(int pid, char c)
 	}
 }
 
-void	send_string(int pid, char *str)
+void	send_string(int pid, char *str, int len)
 {
-	int	len;
 	int	i;
 	int	bit;
 
-	len = strlen(str);
 	i = 31;
 	while (i >= 0)
 	{
@@ -78,6 +76,7 @@ void	send_string(int pid, char *str)
 int	main(int argc, char **argv)
 {
 	pid_t	pid;
+	int		len;
 
 	if (argc != 3)
 	{
@@ -85,6 +84,9 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	pid = ft_atoi(argv[1]);
-	send_string(pid, argv[2]);
+	len = 0;
+	while (argv[2][len])
+		len++;
+	send_string(pid, argv[2], len);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:24:56 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:40:32 by aalhalab         ###   ########.fr       */
+/*   Updated: 2024/03/25 02:12:07 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	main(int argc, char **argv)
 {
 	pid_t	pid;
 	int		i;
+	int		len;
 
 	if (argc != 3)
 	{
@@ -81,7 +82,10 @@ int	main(int argc, char **argv)
 	}
 	signal(SIGUSR1, ack_handler);
 	pid = ft_atoi(argv[1]);
-	send_data(pid, strlen(argv[2]), 32);
+	len = 0;
+	while (argv[2][len])
+		len++;
+	send_data(pid, len, 32);
 	i = 0;
 	while (argv[2][i])
 	{
