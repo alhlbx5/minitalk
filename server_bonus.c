@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalhalab <aalhalab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/13 15:25:25 by aalhalab          #+#    #+#             */
-/*   Updated: 2024/03/24 23:58:59 by aalhalab         ###   ########.fr       */
+/*   Created: 2024/03/16 15:25:25 by aalhalab          #+#    #+#             */
+/*   Updated: 2024/03/25 03:07:49 by aalhalab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-void	send_ack(int pid)
+void	acknowledge(int pid)
 {
 	kill(pid, SIGUSR1);
 }
@@ -60,7 +60,7 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 	{
 		write(1, "\n", 1);
 		len_received = 0;
-		send_ack(info->si_pid);
+		acknowledge(info->si_pid);
 	}
 }
 
